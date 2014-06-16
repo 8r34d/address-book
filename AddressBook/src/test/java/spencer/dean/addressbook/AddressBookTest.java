@@ -31,11 +31,13 @@ public class AddressBookTest {
         Assert.assertEquals( addressBook.getMalesCount(), 3 );
     }
 
-    @Test() void getOldestPerson() throws ParseException {
+    @Test() 
+    public void getOldestPerson() throws ParseException {
         Assert.assertEquals(addressBook.getOldestPerson(), "Wes Jackson");
     }
-    
-    @Test void getNumberOfDaysBillIsOlderThanPaul() throws Exception {
+
+    @Test 
+    public void getNumberOfDaysBillIsOlderThanPaul() throws Exception {
         Assert.assertEquals(addressBook.getDaysOlder("Bill McKnight", "Paul Robinson"), 2862);
     }
 }
