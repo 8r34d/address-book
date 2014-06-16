@@ -44,7 +44,7 @@ public class AddressBook {
         String[] b = getPersonData(personB);
         long agePersonA = getDaysFromSeconds(getAgeInSeconds(a[dobIndex]));
         long agePersonB = getDaysFromSeconds(getAgeInSeconds(b[dobIndex]));
-        return (agePersonA - agePersonB) / 1000;
+        return agePersonA - agePersonB;
     }
 
     private String[] getPersonData(String name) throws Exception {
@@ -63,11 +63,11 @@ public class AddressBook {
     }
 
     private long getTimeToDateInSeconds(Date date) {
-        return date.getTime();
+        return date.getTime() / 1000;
     }
 
     private long getTimeToTodayInSeconds() {
-        return new Date().getTime();
+        return new Date().getTime() / 1000;
     }
 
     private long getAgeInSeconds(String dateAsString) throws ParseException {
