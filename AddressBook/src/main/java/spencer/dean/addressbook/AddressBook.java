@@ -1,5 +1,9 @@
 package spencer.dean.addressbook;
 
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class AddressBook {
@@ -20,16 +24,39 @@ public class AddressBook {
     public int getMalesCount() {
         return getGenderCount(Gender.MALE);
     }
-    
 
-    public String getOldestPerson() {
-        return "";
+    public String getOldestPerson() throws ParseException {
+        String name = "";
+        long age = 0;
+        for (String[] item : data) {
+            long ageInSeconds = getAgeInSeconds(item[dobIndex].trim());
+            if (ageInSeconds > age) {
+                age = ageInSeconds;
+                name = item[nameIndex].trim();
+            }
+        }
+        return name;
     }
-    
-    public int getDaysOldForPerson() {
-        return 0;
+
+    public long getTimeToDateInSeconds(Date date) {
+        return date.getTime();
     }
-    
+
+    public long getTimeToTodayInSeconds() {
+        return new Date().getTime();
+    }
+
+    public long getAgeInSeconds(String dateAsString) throws ParseException {
+        Date date = getDateFromString(dateAsString);
+        return ( getTimeToTodayInSeconds() - getTimeToDateInSeconds(date) );
+    }
+
+    public Date getDateFromString(String dateAsString) throws ParseException {
+        DateFormat df = new SimpleDateFormat("dd/MM/yy");
+        Date date = df.parse(String.valueOf(dateAsString));
+        return date;
+    }
+
     private int getGenderCount(Gender gender) {
         int count = 0;
         for (String[] item : data) {

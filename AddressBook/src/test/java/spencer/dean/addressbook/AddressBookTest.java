@@ -1,5 +1,7 @@
 package spencer.dean.addressbook;
 
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 import org.testng.Assert;
@@ -29,9 +31,8 @@ public class AddressBookTest {
     public void getMalesCount() {
         Assert.assertEquals( addressBook.getMalesCount(), 3 );
     }
-    
-    @Test()
-    public void getFemalesCount() {
-        Assert.assertEquals( addressBook.getFemalesCount(), 2 );
+
+    @Test() void getOldestPerson() throws ParseException {
+        Assert.assertEquals(addressBook.getOldestPerson(), "Wes Jackson");
     }
 }
