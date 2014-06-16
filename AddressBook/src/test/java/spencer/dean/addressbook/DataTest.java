@@ -10,7 +10,7 @@ import org.testng.Assert;
 import spencer.dean.addressbook.Data;
 
 public class DataTest {
-    
+
     private static String addressBook;
 
     @BeforeTest

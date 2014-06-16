@@ -7,12 +7,13 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class AddressBook {
-    
+
     private List<String[]> data;
-    private static final int nameIndex = 0;
-    private static final int genderIndex = 1;
-    private static final int dobIndex = 2;
-    private static final int secondsInDay = 86400;
+    private static final int NAME_INDEX = 0;
+    private static final int GENDER_INDEX = 1;
+    private static final int DOB_INDEX = 2;
+    private static final int SECONDS_IN_A_DAY = 86400;
+    private static final String DATE_FORMAT = "dd/MM/yy";
 
     public AddressBook(List<String[]> addressBookData) {
         data = addressBookData;
@@ -30,36 +31,34 @@ public class AddressBook {
         String name = "";
         long age = 0;
         for (String[] item : data) {
-            long ageInSeconds = getAgeInSeconds(item[dobIndex].trim());
+            long ageInSeconds = getAgeInSeconds(item[DOB_INDEX].trim());
             if (ageInSeconds > age) {
                 age = ageInSeconds;
-                name = item[nameIndex].trim();
+                name = item[NAME_INDEX].trim();
             }
         }
         return name;
     }
 
     public long getDaysOlder(String personA, String personB) throws Exception {
-        String[] a = getPersonData(personA);
-        String[] b = getPersonData(personB);
-        long agePersonA = getDaysFromSeconds(getAgeInSeconds(a[dobIndex]));
-        long agePersonB = getDaysFromSeconds(getAgeInSeconds(b[dobIndex]));
+        String[] personDataA = getPersonData(personA);
+        String[] personDataB = getPersonData(personB);
+        long agePersonA = getDaysFromSeconds(getAgeInSeconds(personDataA[DOB_INDEX]));
+        long agePersonB = getDaysFromSeconds(getAgeInSeconds(personDataB[DOB_INDEX]));
         return agePersonA - agePersonB;
     }
 
     private String[] getPersonData(String name) throws Exception {
-        String[] result = null;
         for (String[] item : data) {
-            if (item[nameIndex].trim().equals(name)) {
-                result = item;
-                return result;
+            if (item[NAME_INDEX].trim().equals(name)) {
+                return item;
             }
         }
         throw new Exception("Data for " + name + " not found!");
     }
 
     private long getDaysFromSeconds(long seconds) {
-        return seconds / secondsInDay;
+        return seconds / SECONDS_IN_A_DAY;
     }
 
     private long getTimeToDateInSeconds(Date date) {
@@ -72,23 +71,21 @@ public class AddressBook {
 
     private long getAgeInSeconds(String dateAsString) throws ParseException {
         Date date = getDateFromString(dateAsString);
-        return ( getTimeToTodayInSeconds() - getTimeToDateInSeconds(date) );
+        return getTimeToTodayInSeconds() - getTimeToDateInSeconds(date);
     }
 
-    private Date getDateFromString(String dateAsString) throws ParseException {
-        DateFormat df = new SimpleDateFormat("dd/MM/yy");
-        Date date = df.parse(String.valueOf(dateAsString));
-        return date;
+    private Date getDateFromString(String date) throws ParseException {
+        DateFormat df = new SimpleDateFormat(DATE_FORMAT);
+        return df.parse(String.valueOf(date));
     }
 
     private int getGenderCount(Gender gender) {
         int count = 0;
         for (String[] item : data) {
-            if ( item[genderIndex].trim().equals(gender.value()) ) {
+            if (item[GENDER_INDEX].trim().equals(gender.value())) {
                 count++;
             }
         }
         return count;
     }
-
 }
