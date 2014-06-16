@@ -12,6 +12,7 @@ public class AddressBook {
     private static final int nameIndex = 0;
     private static final int genderIndex = 1;
     private static final int dobIndex = 2;
+    private static final int secondsInDay = 86400;
 
     public AddressBook(List<String[]> addressBookData) {
         data = addressBookData;
@@ -38,20 +39,43 @@ public class AddressBook {
         return name;
     }
 
-    public long getTimeToDateInSeconds(Date date) {
+    public long getDaysOlder(String personA, String personB) throws Exception {
+        String[] a = getPersonData(personA);
+        String[] b = getPersonData(personB);
+        long agePersonA = getDaysFromSeconds(getAgeInSeconds(a[dobIndex]));
+        long agePersonB = getDaysFromSeconds(getAgeInSeconds(b[dobIndex]));
+        return (agePersonA - agePersonB) / 1000;
+    }
+
+    private String[] getPersonData(String name) throws Exception {
+        String[] result = null;
+        for (String[] item : data) {
+            if (item[nameIndex].trim().equals(name)) {
+                result = item;
+                return result;
+            }
+        }
+        throw new Exception("Data for " + name + " not found!");
+    }
+
+    private long getDaysFromSeconds(long seconds) {
+        return seconds / secondsInDay;
+    }
+
+    private long getTimeToDateInSeconds(Date date) {
         return date.getTime();
     }
 
-    public long getTimeToTodayInSeconds() {
+    private long getTimeToTodayInSeconds() {
         return new Date().getTime();
     }
 
-    public long getAgeInSeconds(String dateAsString) throws ParseException {
+    private long getAgeInSeconds(String dateAsString) throws ParseException {
         Date date = getDateFromString(dateAsString);
         return ( getTimeToTodayInSeconds() - getTimeToDateInSeconds(date) );
     }
 
-    public Date getDateFromString(String dateAsString) throws ParseException {
+    private Date getDateFromString(String dateAsString) throws ParseException {
         DateFormat df = new SimpleDateFormat("dd/MM/yy");
         Date date = df.parse(String.valueOf(dateAsString));
         return date;
