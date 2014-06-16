@@ -29,9 +29,9 @@ public class DataTest {
     }
 
     @Test(dataProvider = "addressBookDataProviderAsIterator")
-    public void addressBookDataNotEmpty(String name, String gender, String dob) {
-        Assert.assertFalse(name.isEmpty());
-        Assert.assertFalse(gender.isEmpty());
-        Assert.assertFalse(dob.isEmpty());
+    public void addressBookDataNotEmpty(String first, String second, String third) {
+        Assert.assertFalse(first.isEmpty());
+        Assert.assertFalse(second.isEmpty());
+        Assert.assertFalse(third.isEmpty());
     }
 }
